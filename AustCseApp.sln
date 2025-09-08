@@ -8,7 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AustCseApp", "AustCseApp\AustCseApp.csproj", "{053BEB18-5143-45E6-0AAD-38DA69F411E1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AustCseApp", "src\AustCseApp\AustCseApp.csproj", "{BCA2F8B7-DB65-735F-51EB-48945B65C4C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,10 +16,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{053BEB18-5143-45E6-0AAD-38DA69F411E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{053BEB18-5143-45E6-0AAD-38DA69F411E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{053BEB18-5143-45E6-0AAD-38DA69F411E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{053BEB18-5143-45E6-0AAD-38DA69F411E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCA2F8B7-DB65-735F-51EB-48945B65C4C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCA2F8B7-DB65-735F-51EB-48945B65C4C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCA2F8B7-DB65-735F-51EB-48945B65C4C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCA2F8B7-DB65-735F-51EB-48945B65C4C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
