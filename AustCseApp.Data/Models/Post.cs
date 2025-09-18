@@ -41,6 +41,7 @@ namespace AustCseApp.Data.Models
         public int UserId { get; set; }
 
         // Navigation Properties
-        public User User { get; set; }
+        public User? User { get; set; }
+        public ICollection<Like> Likes { get; set; } = new List<Like>();
     }
 }

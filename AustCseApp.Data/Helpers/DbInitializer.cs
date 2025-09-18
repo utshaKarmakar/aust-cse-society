@@ -16,7 +16,7 @@ namespace AustCseApp.Data.Helpers
                 var newUser = new User()
                 {
                     FullName = "Nimur Rahman",
-                    ProfilePictureUrl = "https://www.freepik.com/free-vector/smiling-young-man-illustration_336635642.htm#fromView=keyword&page=1&position=1&uuid=7812854c-0dcf-4844-a8b6-d1bc55bc9a32&query=Male+cartoon+face",
+                    ProfilePictureUrl = "https://www.freepik.com/free-vector/blue-circle-with-white-user_145857007.htm#fromView=keyword&page=1&position=0&uuid=09957629-0fb6-41b9-8eb4-e0e1c63e28f1&query=Profile",
                 };
                 await appDbContext.Users.AddAsync(newUser);
                 await appDbContext.SaveChangesAsync();
