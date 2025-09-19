@@ -1,0 +1,151 @@
+@{
+    ViewData["Title"] = "About AUST CSE";
+    var deptHeadEmail = (string?)ViewBag.DeptHeadEmail ?? "headcse@aust.edu";
+}
+
+/*
+  Use the same outer wrapper as your feed so the fixed sidebar/header don't overlap this page.
+  - Left margin shifts content to the right of the sidebar
+  - Top margin clears the top navbar
+*/
+<main id="site__main" class="2xl:ml-[--w-side] xl:ml-[--w-side-sm] p-2.5 mt-[--m-top]">
+
+    <!-- Content container width consistent with your feed -->
+    <div class="max-w-[1065px] mx-auto">
+
+        <!-- Card wrapper to match your app's style -->
+        <div class="bg-white rounded-xl shadow-sm md:p-6 p-4 border1">
+
+            <h1 class="mb-4 text-2xl font-semibold">AUST CSE</h1>
+
+            <!-- SECTION: MESSAGE FROM HEAD -->
+            <div class="grid lg:grid-cols-3 gap-6 mb-6">
+                <div class="lg:col-span-2">
+                    <h4 class="text-green-600 font-bold mb-2">Message from Head</h4>
+
+                    <p class="mb-3">
+                        Welcome to the Department of Computer Science and Engineering (CSE) at Ahsanullah University of Science and Technology (AUST).
+                        On behalf of the faculty and staff of the CSE department, I would like to inform you that we are delighted and honored that you have
+                        chosen to join us in pursuing your career in CSE. This is an exhilarating time in CSE and Information Technology (IT), both here at
+                        AUST and throughout the world. You are enrolling in an astonishingly dynamic field in which you can explore some of the world’s most
+                        pressing challenges. Globally, we have seen substantial progress in computer applications like social communication, industrial
+                        automation, software development, and notable improvements in artificial intelligence. However, some significant approaches, such as
+                        speech synthesis, medical image computing, natural language processing, cybersecurity, mixed reality, etc. are progressing towards
+                        environmental sustainability with the vision of a better world. This means that there are great opportunities for you to learn about
+                        these problems and technologies and help develop solutions with our faculty members.
+                    </p>
+
+                    <p class="mb-3">
+                        Our CSE department is dedicated to quality education and research. We offer qualified learned faculty members and modern computing
+                        laboratories, which will provide you with the best opportunities to gain adequate knowledge and skills for the IT era. Our graduates
+                        are recruited with excellent placement by educational and research institutions (locally and internationally), government agencies,
+                        and private industry.
+                    </p>
+
+                    <p class="mb-3">
+                        Your well-being is extremely important to us. If you have any problems, please do not hesitate to contact me or any of the faculty
+                        members. We are always ready to support your long educational journey in all aspects of learning, social, and professional development.
+                    </p>
+
+                    <p class="mb-0">
+                        We welcome you to be part of this challenging and exciting environment as you seek opportunities to learn and grow as a future computer scientist.
+                    </p>
+                </div>
+
+                <div>
+                    <img class="w-full h-auto rounded shadow-sm" src="~/images/about/head.jpg" alt="Message from Head" />
+                    <div class="mt-3 text-sm">
+                        <strong>Prof. Dr. Md. Shamim Akhter</strong><br />
+                        Professor and Department Head,<br />
+                        Department of Computer Science and Engineering<br />
+                        <a class="text-sky-600 hover:underline" href="mailto:@deptHeadEmail">@deptHeadEmail</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION: MISSION + VISION -->
+            <div class="grid md:grid-cols-2 gap-6 mb-4">
+                <div>
+                    <h4 class="text-green-600 font-bold mb-2">Mission</h4>
+                    <img src="~/images/about/mission.jpg" class="w-full h-auto rounded shadow-sm mb-3" alt="Mission" />
+                    <ol class="list-decimal list-inside space-y-1">
+                        <li>To deliver quality higher education to the worthy young people of the country with social and ethical commitment.</li>
+                        <li>To provide the best possible foundation knowledge for cutting-edge research in the field of computation and information technology.</li>
+                        <li>To offer relevant courses based on modern, improvised and up-to-date curriculum to the students and establish a strong connection between industry and academia.</li>
+                    </ol>
+                </div>
+
+                <div>
+                    <h4 class="text-green-600 font-bold mb-2">Vision</h4>
+                    <img src="~/images/about/vision.jpg" class="w-full h-auto rounded shadow-sm mb-3" alt="Vision" />
+                    <p class="mb-0">
+                        The vision of the CSE program is to establish itself as a center for high-quality education and research in the field of computer science and
+                        engineering that would be applauded inside as well as outside the country. With this ambitious end in view, the program is strictly designed to
+                        provide a solid foundation of scientific and technical knowledge of the discipline as well as social and ethical commitment of the teaching-learning
+                        community involved.
+                    </p>
+                </div>
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="flex gap-2">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Done</a>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#inquiryModal">Any Inquiry</button>
+            </div>
+
+        </div> <!-- /card -->
+
+    </div> <!-- /container width -->
+
+</main>
+
+<!-- INQUIRY MODAL -->
+<div class="modal fade" id="inquiryModal" tabindex="-1" aria-labelledby="inquiryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <form asp-controller="About" asp-action="SendInquiry" method="post">
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title" id="inquiryModalLabel">Email the Department Head</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">To</label>
+                        <input type="email" class="form-control" value="@deptHeadEmail" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label for="senderEmail" class="form-label">Your email (optional)</label>
+                        <input name="senderEmail" id="senderEmail" type="email" class="form-control" placeholder="you@example.com" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea name="description" id="description" rows="6" class="form-control" placeholder="Write your inquiry…" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit"
+                            class="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        Submit
+                    </button>
+                    <button type="button" data-bs-dismiss="modal"
+                            class="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 focus:outline-none">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@if (TempData["Alert"] != null)
+{
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div class="toast show align-items-center text-bg-success border-0">
+            <div class="d-flex">
+                <div class="toast-body">@TempData["Alert"]</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
+}
