@@ -14,6 +14,12 @@ namespace AustCseApp
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            //quiz related
+            builder.Services.AddHttpClient();
+            builder.Services.AddSingleton<AustCseApp.Services.GptQuizService>();
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddSession();
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
@@ -47,6 +53,7 @@ namespace AustCseApp
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthorization();
 

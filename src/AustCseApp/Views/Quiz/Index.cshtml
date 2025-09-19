@@ -1,0 +1,75 @@
+﻿@model AustCseApp.Models.QuizStartVm
+@{
+    ViewData["Title"] = "Quiz";
+}
+
+<style>
+    /* keep content away from the sidebar; consistent max width */
+    .page-wrap {
+        max-width: 1100px;
+        margin: 24px auto;
+    }
+
+    .hero {
+        background: linear-gradient(135deg,#fff7cc 0%,#e6f1ff 100%);
+        border: 1px solid #e5e7eb;
+        border-radius: 18px;
+        padding: 28px;
+        box-shadow: 0 8px 24px rgba(0,0,0,.06);
+    }
+
+    .lead {
+        color: #475569
+    }
+
+    .form-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        padding: 18px;
+        margin-top: 14px
+    }
+
+        .form-card .form-control, .form-card .form-select {
+            height: calc(2.6rem + 2px)
+        }
+</style>
+
+<div class="container page-wrap">
+    <div class="hero">
+        <h3 class="fw-semibold mb-1">Self-Check Quiz</h3>
+        <p class="lead mb-3">A quiz on any CSE topic.</p>
+
+        <form asp-action="Start" method="post" class="form-card">
+            <div class="row g-3 align-items-end">
+                <div class="col-lg-6 col-md-6">
+                    <label asp-for="Topic" class="form-label fw-semibold">Topic</label>
+                    <input asp-for="Topic" class="form-control" placeholder="e.g., LLM, OS scheduling, Python loops" />
+                    <span asp-validation-for="Topic" class="text-danger small"></span>
+                </div>
+
+                <div class="col-lg-3 col-md-3">
+                    <label asp-for="Difficulty" class="form-label fw-semibold">Difficulty</label>
+                    <select asp-for="Difficulty" class="form-select">
+                        <option>easy</option>
+                        <option>medium</option>
+                        <option>hard</option>
+                    </select>
+                </div>
+
+                <div class="col-lg-2 col-md-3">
+                    <label asp-for="Count" class="form-label fw-semibold">Count</label>
+                    <input asp-for="Count" type="number" min="1" max="20" class="form-control" />
+                </div>
+
+                <div class="col-lg-1 col-md-12 d-grid">
+                    <button type="submit" class="btn btn-primary">Start</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

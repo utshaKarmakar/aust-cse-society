@@ -1,0 +1,64 @@
+﻿@model AustCseApp.Models.QuizResultVm
+@{
+    ViewData["Title"] = "Quiz Result";
+}
+
+<style>
+    .page-wrap {
+        max-width: 1100px;
+        margin: 24px auto;
+    }
+
+    .summary {
+        background: #ecfeff;
+        border: 1px solid #bae6fd;
+        border-radius: 12px;
+        padding: 16px
+    }
+
+    .q-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px
+    }
+
+        .q-card + .q-card {
+            margin-top: 16px
+        }
+
+    .pill {
+        border-radius: 999px;
+        padding: .35rem .6rem
+    }
+</style>
+
+<div class="container page-wrap">
+    <div class="summary d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <div class="fw-semibold">Your Score: @Model.Score / @Model.Quiz.questions.Count</div>
+            <small class="text-muted">@Model.Quiz.topic (@Model.Quiz.difficulty)</small>
+        </div>
+        <a asp-controller="Quiz" asp-action="Index" class="btn btn-outline-primary">New Quiz</a>
+    </div>
+
+    @for (int i = 0; i < Model.Quiz.questions.Count; i++)
+    {
+        var q = Model.Quiz.questions[i];
+        var user = (i < Model.Answers.Count ? Model.Answers[i] : -1);
+        var correct = q.correctIndex;
+
+        <div class="q-card p-3">
+            <div class="fw-semibold mb-2">Q@(i + 1). @q.stem</div>
+            <div class="d-flex flex-wrap gap-2 mb-2">
+                @for (int j = 0; j < q.options.Count; j++)
+                {
+                    var cls = j == correct ? "badge bg-success pill"
+                    : (j == user ? "badge bg-danger pill"
+                    : "badge bg-light text-dark pill");
+                    <span class="@cls">@q.options[j]</span>
+                }
+            </div>
+            <div class="small text-muted">Explanation: @q.explanation</div>
+        </div>
+    }
+</div>
