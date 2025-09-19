@@ -1,8 +1,7 @@
 using AustCseApp.Data;
 using AustCseApp.Data.Helpers;
-using AustCseApp.Services;
-using Microsoft.EntityFrameworkCore;
 
+using Microsoft.EntityFrameworkCore;
 
 namespace AustCseApp
 {
@@ -14,10 +13,6 @@ namespace AustCseApp
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
-            // Add Email service
-            builder.Services.Configure<SmtpOptions>(builder.Configuration.GetSection("Smtp"));
-            builder.Services.AddTransient<IEmailSender, SmtpEmailSender>();
 
             // Database Configuration
             var dbConnectionString = builder.Configuration.GetConnectionString("Default");

@@ -1,5 +1,6 @@
-﻿@* Views/Shared/Sidebar.cshtml *@
-<div id="site__sidebar" class="fixed top-0 left-0 z-[99] pt-[--m-top] overflow-hidden transition-transform xl:duration-500 max-xl:w/full max-xl:-translate-x-full">
+
+﻿<div id="site__sidebar" class="fixed top-0 left-0 z-[99] pt-[--m-top] overflow-hidden transition-transform xl:duration-500 max-xl:w-full max-xl:-translate-x-full">
+
     <div class="p-2 max-xl:bg-white shadow-sm 2xl:w-72 sm:w-64 w-[80%] h-[calc(100vh-64px)] relative z-30 max-lg:border-r dark:max-xl:!bg-slate-700 dark:border-slate-700">
 
         <div class="pr-4" data-simplebar>
@@ -7,32 +8,45 @@
                 <ul>
 
                     <!-- Feed -->
+
+
                     <li>
-                        <a asp-controller="Home" asp-action="Index">
+                        <a>
                             <img src="~/images/icons/home.png" class="w-6" />
-                            <span>Feed</span>
+                            <span> Feed </span>
                         </a>
                     </li>
 
-                    <!-- Favorites (wire later if you add a page) -->
+
+                    <!-- Favorites -->
+
                     <li>
                         <a>
                             <img src="~/images/icons/page.png" class="w-6" />
-                            <span>Favorites</span>
+                            <span> Favorites </span>
                         </a>
                     </li>
 
-                    <!-- Friends (wire later) -->
+
+                    <!-- Friends -->
+
                     <li>
                         <a>
                             <img src="~/images/icons/group-2.png" class="w-6" />
-                            <span>Friends</span>
+                            <span> Friends </span>
                         </a>
                     </li>
 
-                  
+                    <!-- About AUST -->
+                    <li>
+                        <a>
+                            <img src="~/images/aust.png" class="w-6" />
+                            <span>About AUST</span>
+                        </a>
+                    </li>
 
-                    <!-- AUST Clubs (wire later) -->
+                    <!-- AUST Clubs -->
+
                     <li>
                         <a>
                             <img src="~/images/clubs.jpg" class="w-6" />
@@ -40,7 +54,7 @@
                         </a>
                     </li>
 
-                    <!-- Study Materials (wire later) -->
+
                     <li>
                         <a>
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -50,7 +64,7 @@
                         </a>
                     </li>
 
-                    <!-- Video Archive (wire later) -->
+
                     <li>
                         <a>
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -61,7 +75,7 @@
                         </a>
                     </li>
 
-                    <!-- Quiz (wire later) -->
+
                     <li>
                         <a>
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -70,31 +84,7 @@
                             <span>Quiz</span>
                         </a>
                     </li>
-                    <!-- CGPA Calculator -->
-                    <li>
-                        <a asp-controller="Cgpa" asp-action="Index">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M5 3h14a2 2 0 012 2v3H3V5a2 2 0 012-2zm-2 8h18v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6zm9 2h6v2h-6v-2zM5 13h6v2H5v-2z" />
-                            </svg>
-                            <span>CGPA Calculator</span>
-                        </a>
-                    </li>
-                    <!-- Alumni Directory -->
-                    <li>
-                        <a asp-controller="Alumni" asp-action="Index">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 12a5 5 0 100-10 5 5 0 000 10zm-7 9a7 7 0 0114 0v1H5v-1z" />
-                            </svg>
-                            <span>Alumni Directory</span>
-                        </a>
-                    </li>
-                    <!-- About AUST CSE-->
-                    <li>
-                        <a asp-controller="About" asp-action="Index">
-                            <img src="~/images/aust.png" class="w-6" />
-                            <span>About AUST CSE</span>
-                        </a>
-                    </li>
+
 
                 </ul>
             </nav>
@@ -121,6 +111,6 @@
     </div>
 
     <div id="site__sidebar__overly"
-         class="absolute top-0 left-0 z-20 w-screen h-screen xl:hidden backdrop-blur-sm"
-         uk-toggle="target: #site__sidebar ; cls :!-translate-x-0"></div>
+         class="absolute top-0 left-0 z-20 w-screen h-screen xl:hidden backdrop-blur-sm" uk-toggle="target: #site__sidebar ; cls :!-translate-x-0"></div>
 </div>
+

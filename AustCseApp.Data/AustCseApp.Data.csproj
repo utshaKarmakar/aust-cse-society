@@ -6,9 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Content Remove="Models\Course.razor" />
-  </ItemGroup>
+
 
 
   <ItemGroup>
