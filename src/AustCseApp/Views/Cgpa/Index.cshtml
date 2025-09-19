@@ -1,0 +1,258 @@
+﻿@{
+    ViewData["Title"] = "CGPA Calculator";
+}
+
+<style>
+    .nice-scroll::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .nice-scroll::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 9999px;
+    }
+
+    .nice-scroll::-webkit-scrollbar-track {
+        background: #f1f5f9;
+    }
+</style>
+
+<main id="site__main" class="2xl:ml-[--w-side] xl:ml-[--w-side-sm] p-2.5 mt-[--m-top]">
+    <div class="max-w-[1065px] mx-auto">
+        <div class="bg-white rounded-xl shadow-sm md:p-6 p-4 border1">
+
+            <h1 class="text-2xl font-semibold mb-4">CGPA Calculator</h1>
+
+            <!-- Inputs -->
+            <div class="grid md:grid-cols-3 gap-4 mb-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Student ID</label>
+                    <input id="studentId" type="text"
+                           class="w-full rounded border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-400"
+                           placeholder="e.g., 21.02.04.123" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Year</label>
+                    <select id="year" class="w-full rounded border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-400">
+                        <option value="1">Year 1</option>
+                        <option value="2">Year 2</option>
+                        <option value="3">Year 3</option>
+                        <option value="4">Year 4</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Semester</label>
+                    <select id="semester" class="w-full rounded border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-400">
+                        <option value="1">Semester 1</option>
+                        <option value="2">Semester 2</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3 mb-6">
+                <button id="loadBtn"
+                        class="px-4 py-2 rounded-lg bg-sky-600 text-white hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-400">
+                    Load Courses
+                </button>
+                <span id="termLabel" class="text-sm text-slate-500 hidden"></span>
+            </div>
+
+            <!-- Table -->
+            <div id="courseCard" class="hidden">
+                <div class="nice-scroll overflow-x-auto">
+                    <table class="min-w-full border border-slate-200 rounded-lg overflow-hidden">
+                        <thead class="bg-slate-50">
+                            <tr class="text-left text-sm">
+                                <th class="px-3 py-2 border-b">Course Code</th>
+                                <th class="px-3 py-2 border-b">Title</th>
+                                <th class="px-3 py-2 border-b">Credit</th>
+                                <th class="px-3 py-2 border-b">Obtained GPA <span class="text-slate-400">(2.00–4.00)</span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="courseRows" class="text-sm"></tbody>
+                        <tfoot>
+                            <tr class="bg-slate-50 text-sm">
+                                <td class="px-3 py-2 border-t" colspan="2"><strong>Total Credits</strong></td>
+                                <td class="px-3 py-2 border-t" id="totalCredits">0.00</td>
+                                <td class="px-3 py-2 border-t"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <!-- Actions: Submit + Reset -->
+                <div class="mt-4 d-flex justify-content-center gap-2">
+                    <button id="submitBtn" type="button" class="btn btn-success btn-lg">
+                        Submit
+                    </button>
+                    <button id="resetBtn" type="button" class="btn btn-outline-secondary btn-lg">
+                        Reset
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<!-- Result Modal -->
+<div class="modal fade" id="cgpaModal" tabindex="-1" aria-labelledby="cgpaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cgpaModalLabel">Your current CGPA is:</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="cgpaValue" class="text-3xl font-semibold text-center"></div>
+                <div id="cgpaDetails" class="text-sm text-slate-600 mt-2 text-center"></div>
+            </div>
+            <div class="modal-footer">
+                <!-- CHANGED: Button -> Anchor that navigates home -->
+                <a id="modalOk" class="btn btn-primary" href='@Url.Action("Index", "Home")'>Done</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (() => {
+          const $ = (q) => document.querySelector(q);
+
+          const yearSel = $('#year');
+          const semSel = $('#semester');
+          const loadBtn = $('#loadBtn');
+          const courseCard = $('#courseCard');
+          const courseRows = $('#courseRows');
+          const totalCreditsEl = $('#totalCredits');
+          const termLabel = $('#termLabel');
+          const submitBtn = $('#submitBtn');
+          const resetBtn = $('#resetBtn');
+          const studentId = $('#studentId');
+
+          function asNumber(v, def=0) {
+            const n = Number(v);
+            return isNaN(n) ? def : n;
+          }
+
+          // clamp GPA to 2.00–4.00
+          function clampGpa(value) {
+            if (value === "" || value === null || value === undefined) return "";
+            let n = Number(value);
+            if (isNaN(n)) return "";
+            n = Math.max(2.0, Math.min(4.0, n));
+            return n.toFixed(2);
+          }
+
+          function attachGpaGuards(inp) {
+            inp.addEventListener('input', () => {
+              const n = Number(inp.value);
+              if (inp.value === "" || (n >= 2 && n <= 4)) {
+                inp.setCustomValidity("");
+              } else {
+                inp.setCustomValidity("GPA must be between 2.00 and 4.00");
+              }
+            });
+            inp.addEventListener('blur', () => {
+              inp.value = clampGpa(inp.value);
+              inp.setCustomValidity("");
+            });
+          }
+
+          function renderRows(courses) {
+            courseRows.innerHTML = '';
+            let totalCredits = 0;
+
+            courses.forEach((c) => {
+              totalCredits += asNumber(c.credit);
+
+              const tr = document.createElement('tr');
+              tr.className = 'odd:bg-white even:bg-slate-50';
+
+              tr.innerHTML = `
+                <td class="px-3 py-2 border-t font-medium">${c.code}</td>
+                <td class="px-3 py-2 border-t">${c.title}</td>
+                <td class="px-3 py-2 border-t">${Number(c.credit).toFixed(2)}</td>
+                <td class="px-3 py-2 border-t">
+                  <input type="number" min="2" max="4" step="0.01" inputmode="decimal"
+                         class="w-28 rounded border border-slate-300 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-sky-400 gpa-input"
+                         data-credit="${c.credit}" placeholder="e.g., 3.75" />
+                </td>`;
+              courseRows.appendChild(tr);
+            });
+
+            document.querySelectorAll('.gpa-input').forEach(attachGpaGuards);
+            totalCreditsEl.textContent = totalCredits.toFixed(2);
+          }
+
+          async function loadCourses() {
+            const year = asNumber(yearSel.value, 1);
+            const semester = asNumber(semSel.value, 1);
+
+            const res = await fetch(`/Cgpa/Courses?year=${year}&semester=${semester}`, { cache: 'no-store' });
+            if (!res.ok) {
+              alert('No curriculum found for the selected term. Please update Data/Curriculum.cs.');
+              return;
+            }
+            const data = await res.json();
+            const normalized = data.map(d => ({ code: d.code, title: d.title, credit: d.credit }));
+
+            renderRows(normalized);
+            termLabel.textContent = `Loaded: Year ${year}, Semester ${semester}`;
+            termLabel.classList.remove('hidden');
+            courseCard.classList.remove('hidden');
+          }
+
+          function calculateAndShow() {
+            const gpaInputs = document.querySelectorAll('.gpa-input');
+            let sumCreditTimesGpa = 0;
+            let sumCredit = 0;
+            let hasAny = false;
+
+            for (const inp of gpaInputs) {
+              const credit = asNumber(inp.dataset.credit, 0);
+              const val = inp.value.trim();
+              if (val !== "") {
+                const g = Number(val);
+                if (isNaN(g) || g < 2 || g > 4) {
+                  inp.focus();
+                  inp.reportValidity();
+                  return;
+                }
+                sumCreditTimesGpa += (credit * g);
+                sumCredit += credit;
+                hasAny = true;
+              }
+            }
+
+            if (!hasAny || sumCredit === 0) {
+              alert('Please enter GPA for at least one course (2.00–4.00).');
+              return;
+            }
+
+            const cgpa = sumCreditTimesGpa / sumCredit;
+            const cgpaRounded = Math.round(cgpa * 100) / 100;
+
+            document.getElementById('cgpaValue').textContent = cgpaRounded.toFixed(2);
+            const id = (studentId.value || '').trim() || '(ID not provided)';
+            document.getElementById('cgpaDetails').textContent = `${id} • Total Credits Counted: ${sumCredit.toFixed(2)}`;
+
+            const modal = new bootstrap.Modal(document.getElementById('cgpaModal'));
+            modal.show();
+          }
+
+          function resetAll() {
+            studentId.value = '';
+            courseRows.innerHTML = '';
+            totalCreditsEl.textContent = '0.00';
+            termLabel.classList.add('hidden');
+            courseCard.classList.add('hidden');
+          }
+
+          loadBtn.addEventListener('click', loadCourses);
+          submitBtn.addEventListener('click', (e) => { e.preventDefault(); calculateAndShow(); });
+          resetBtn.addEventListener('click', resetAll);
+        })();
+    </script>
+}
