@@ -1,5 +1,6 @@
-﻿using AustCseApp.Data.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using AustCseApp.Models;
+
 namespace AustCseApp.Data
 {
     /// <summary>

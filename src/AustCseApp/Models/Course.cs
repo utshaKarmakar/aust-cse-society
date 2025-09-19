@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AustCseApp.Data.Models
+﻿namespace AustCseApp.Models
 {
     public class Course
     {
