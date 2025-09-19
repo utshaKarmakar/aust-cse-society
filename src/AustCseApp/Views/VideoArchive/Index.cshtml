@@ -1,0 +1,105 @@
+﻿@model AustCseApp.Models.StudentLookup
+@{
+    ViewData["Title"] = "Video Archive";
+}
+
+<style>
+    .va-wrap {
+        max-width: 1100px;
+        margin: 2.5rem auto;
+    }
+
+    .va-hero {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        color: #f1f5f9;
+        border-radius: 20px;
+        padding: 36px;
+        box-shadow: 0 8px 28px rgba(0,0,0,.4);
+    }
+
+        .va-hero h2 {
+            font-weight: 600;
+        }
+
+    .va-card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 22px;
+        margin-top: 18px;
+        border: 1px solid #e5e7eb;
+    }
+
+    .va-label {
+        font-weight: 600;
+        color: #1e293b;
+    }
+
+    .btn-proceed {
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .va-card .form-control, .va-card .form-select {
+        height: calc(2.75rem + 2px);
+    }
+</style>
+
+<div class="container va-wrap">
+    <div class="va-hero">
+        <h2 class="mb-1">Video Archive</h2>
+        <p class="mb-4">Find and watch your course lectures directly on YouTube.</p>
+
+        <form id="lookup-form" class="va-card">
+            <div class="row g-4 align-items-end">
+                <!-- Student ID -->
+                <div class="col-lg-5 col-md-6">
+                    <label asp-for="StudentId" class="form-label sm-label"></label>
+                    <input asp-for="StudentId"
+                           type="text"
+                           class="form-control"
+                           maxlength="11"
+                           pattern="\d{11}"
+                           placeholder="e.g., 20XX-1-60-XXX" />
+                    <span asp-validation-for="StudentId" class="text-danger small"></span>
+                </div>
+                <!-- Year -->
+                <div class="col-lg-2 col-md-3">
+                    <label asp-for="Year" class="form-label va-label"></label>
+                    <select asp-for="Year" class="form-select">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                    </select>
+                </div>
+
+                <!-- Semester -->
+                <div class="col-lg-2 col-md-3">
+                    <label asp-for="Semester" class="form-label va-label"></label>
+                    <select asp-for="Semester" class="form-select">
+                        <option>1</option>
+                        <option>2</option>
+                    </select>
+                </div>
+
+                <!-- Button -->
+                <div class="col-lg-3 col-md-12 d-grid">
+                    <button type="button" id="btn-proceed" class="btn btn-danger btn-proceed">
+                        Proceed
+                    </button>
+                </div>
+            </div>
+            <div class="mt-3">
+                <small class="text-secondary">
+                    Tip: Choose your Year &amp; Semester, then click <strong>Proceed</strong>.
+                </small>
+            </div>
+        </form>
+    </div>
+</div>
+
+<partial name="_CourseModal" />
+
+@section Scripts {
+    <script src="~/js/video-archive.js"></script>
+}
