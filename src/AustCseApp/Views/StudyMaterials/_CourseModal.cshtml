@@ -1,0 +1,24 @@
+﻿<div class="modal fade" id="coursesModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title mb-0">Courses for <span id="modal-ys"></span></h5>
+                    <small class="text-muted">Click <strong>Get link</strong> to open the Google Drive notes</small>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <div id="loading" class="d-none text-center py-4">
+                    <div class="spinner-border" role="status" aria-hidden="true"></div>
+                    <div class="mt-2 small text-muted">Loading courses…</div>
+                </div>
+
+                <div id="courses-list" class="list-group">
+                    <!-- populated by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
