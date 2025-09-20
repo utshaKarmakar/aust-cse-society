@@ -17,15 +17,18 @@ namespace AustCseApp.Services
         {
             _http = factory.CreateClient();
             _http.Timeout = TimeSpan.FromSeconds(60);
-            _apiKey = config["OpenAI:ApiKey"] ?? Environment.GetEnvironmentVariable("OPENAI_API_KEY") ?? "";
+
+            // ✅ Unified API key loading and validation
+            _apiKey = (config["OpenAI:ApiKey"]
+                      ?? Environment.GetEnvironmentVariable("OPENAI_API_KEY")
+                      ?? "").Trim();
+
+            if (string.IsNullOrWhiteSpace(_apiKey) || !_apiKey.StartsWith("sk-"))
+                throw new Exception("Missing or invalid OpenAI API key.");
         }
 
         public async Task<QuizPayload> GenerateQuizAsync(string topic, string difficulty, int count)
         {
-            if (string.IsNullOrWhiteSpace(_apiKey))
-                throw new InvalidOperationException(
-                    "OpenAI API key missing. Put it in appsettings.json under OpenAI:ApiKey or env OPENAI_API_KEY.");
-
             var system = @"You are a careful examiner for CSE students.
 Return ONLY JSON that matches the provided schema.
 Questions must be factual, testable, and unambiguous.
@@ -52,11 +55,10 @@ Return strictly valid JSON in this schema:
   ]
 }}";
 
-            // --- Chat Completions API (stable), JSON-mode ---
+            // --- Chat Completions API (JSON mode) ---
             var payload = new
             {
-                // pick a model you have access to, e.g. gpt-4o-mini or gpt-4o
-                model = "gpt-4o-mini",
+                model = "gpt-4o-mini", // ✅ stable model
                 messages = new object[]
                 {
                     new { role = "system", content = system },
@@ -66,9 +68,9 @@ Return strictly valid JSON in this schema:
                 temperature = 0.2
             };
 
+            // ✅ Request with validated API key
             var req = new HttpRequestMessage(HttpMethod.Post, "https://api.openai.com/v1/chat/completions");
-            req.Headers.Authorization =
-                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _apiKey);
+            req.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _apiKey);
             req.Content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
 
             var res = await _http.SendAsync(req);
@@ -77,7 +79,7 @@ Return strictly valid JSON in this schema:
             if (!res.IsSuccessStatusCode)
                 throw new InvalidOperationException($"OpenAI error {(int)res.StatusCode}: {body}");
 
-            // Parse: choices[0].message.content contains the JSON object string
+            // ✅ Parse: choices[0].message.content contains the JSON object string
             using var doc = JsonDocument.Parse(body);
             var choices = doc.RootElement.GetProperty("choices");
             if (choices.GetArrayLength() == 0)
